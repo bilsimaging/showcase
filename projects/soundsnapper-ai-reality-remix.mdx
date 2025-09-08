@@ -1,0 +1,190 @@
+---
+title: SoundSnapper - AI-Powered Reality Remix
+description: Transform camera captures into immersive audio-visual experiences using Gemini analysis, Fal AI transformations, and ElevenLabs sound generation
+authorIds:
+  - bilel-aroua
+categories:
+  - text-to-speech
+  - music
+isFeatured: false
+date: "2025-09-08"
+image: /images/cover_banner.png
+demoUrl: https://soundsnapper.vercel.app
+repoUrl: https://github.com/bilsimaging/soundsnapper
+videoUrl: https://www.youtube.com/watch?v=MwVpIdp3tdI
+xUrl: https://x.com/ArouaBils
+---
+
+# SoundSnapper - AI-Powered Reality Remix
+
+## Overview
+
+SoundSnapper is a revolutionary camera application that transforms your everyday captures into immersive audio-visual experiences. Using the cutting-edge power of **Gemini 2.5 Flash Image Preview (Nano Banana)** technology, the app analyzes scenes to generate synchronized soundscapes through **ElevenLabs' advanced audio generation APIs**.
+
+The magic happens in real-time: snap a photo, let AI understand your scene, apply artistic transformations, and listen as your world comes alive with matching ambient sounds and effects. It's a complete sensory remix of reality powered by multimodal AI.
+
+## Key Features
+
+- **🤖 Intelligent Scene Analysis**: Gemini 2.5 Flash Image Preview analyzes camera captures to understand environmental context, lighting, objects, and spatial relationships
+- **🎨 Artistic Reality Transformation**: Fal AI integration provides sophisticated image transformations with styles like Cyberpunk, Anime, and Watercolor
+- **🎵 Immersive Audio Generation**: ElevenLabs powers the complete audio experience through text-to-speech narration and AI sound generation
+- **📱 Mobile-First Experience**: Optimized camera interface with touch interactions and responsive design
+- **🎭 Mood-Adaptive Processing**: Choose from Real, Dreamy, Sci-Fi, or Cartoon atmospheres for tailored audio-visual experiences
+- **🔊 Interactive Audio Controls**: Adjustable volume controls for ambient sounds and effects with real-time mixing
+
+## How It Works
+
+SoundSnapper orchestrates a seamless AI workflow that demonstrates the power of multimodal AI integration:
+
+1. **📸 Capture**: Point your camera at any scene and tap "Snap!" to capture the moment
+2. **🧠 Analyze**: Gemini 2.5 Flash Image Preview performs deep scene analysis, understanding environmental context and generating structured JSON responses
+3. **🎨 Transform**: Choose from artistic styles powered by Fal AI's `gemini-25-flash-image/edit` endpoint for reality remixing
+4. **🎵 Generate**: ElevenLabs creates matching audio experiences with ambient soundscapes and contextual sound effects
+5. **✨ Experience**: Enjoy your transformed reality with synchronized audio-visual content
+
+The innovation lies in the seamless coordination between vision AI, image transformation, and audio generation - creating a complete sensory journey from a single camera capture.
+
+## ElevenLabs Integration
+
+SoundSnapper leverages multiple ElevenLabs APIs to create rich audio experiences:
+
+### **Text-to-Speech Narration**
+```typescript
+const playTextToSpeech = async (text: string, voiceId = 'Xb7hH8MSUJpSbSDYk0k2') => {
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: { 
+            'Accept': 'audio/mpeg', 
+            'Content-Type': 'application/json', 
+            'xi-api-key': ELEVENLABS_API_KEY 
+        },
+        body: JSON.stringify({
+            text: text, 
+            model_id: 'eleven_monolingual_v1',
+            voice_settings: { stability: 0.5, similarity_boost: 0.5 }
+        })
+    });
+    
+    const audioBlob = await response.blob();
+    const audio = new Audio(URL.createObjectURL(audioBlob));
+    audio.play();
+};
+```
+
+### **AI Sound Generation**
+```typescript
+const generateAndPlayAudio = async (text: string, type: 'ambience' | 'sfx') => {
+    const payload = {
+        text: text, 
+        model_id: "eleven_text_to_sound_v2",
+        ...(type === 'ambience' && { loop: true, duration_seconds: 10 })
+    };
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/sound-generation`, {
+        method: 'POST',
+        headers: { 
+            'Accept': 'audio/mpeg', 
+            'Content-Type': 'application/json', 
+            'xi-api-key': ELEVENLABS_API_KEY 
+        },
+        body: JSON.stringify(payload)
+    });
+    
+    const audioBlob = await response.blob();
+    const audio = new Audio(URL.createObjectURL(audioBlob));
+    audio.loop = type === 'ambience';
+    audio.play();
+};
+```
+
+## Technologies Used
+
+- **ElevenLabs API**: Text-to-speech narration and AI sound generation for immersive audio experiences
+- **Gemini 2.5 Flash Image Preview**: Advanced scene analysis and structured JSON response generation
+- **Fal AI**: Artistic image transformation using `gemini-25-flash-image/edit` endpoint
+- **React 19**: Modern frontend framework with latest concurrent features
+- **TypeScript**: Type-safe development for robust API integration
+- **Vite**: Fast development and optimized production builds
+- **Progressive Web App**: Mobile-optimized experience with camera access
+
+## Getting Started
+
+### Prerequisites
+- Modern web browser with camera access
+- ElevenLabs API key for audio generation
+- Gemini API key for scene analysis
+- Fal AI API key for image transformation
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/bilsimaging/soundsnapper.git
+cd soundsnapper
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+echo "API_KEY=your_gemini_api_key" > .env
+echo "FAL_API_KEY=your_fal_api_key" >> .env
+echo "ELEVENLABS_API_KEY=your_elevenlabs_api_key" >> .env
+
+# Start development server
+npm run dev
+```
+
+### Usage
+1. **Open the application** in your browser
+2. **Allow camera access** when prompted
+3. **Point camera** at any interesting scene
+4. **Tap "Snap!"** to capture and analyze the scene
+5. **Choose transformation style** (Anime, Cyberpunk, Watercolor, etc.)
+6. **Click "Transform"** to apply artistic effects
+7. **Listen** as ElevenLabs generates matching audio for your transformed reality
+
+## Demo
+
+🌐 **Live Demo No API**: [https://soundsnapper.vercel.app](https://soundsnapper.vercel.app)
+
+Experience SoundSnapper directly in your browser! The live demo showcases the full pipeline from camera capture to AI-generated audio, demonstrating the seamless integration of multiple AI technologies.
+
+### Demo Highlights:
+- **Real-time camera integration** with mobile-optimized interface
+- **Gemini-powered scene analysis** generating structured audio prompts
+- **Artistic transformations** via Fal AI's advanced image processing
+- **ElevenLabs audio generation** creating ambient soundscapes and effects
+- **Interactive controls** for volume mixing and style selection
+
+## Competition Context
+
+SoundSnapper was developed for the **Google Nano Banana Hackathon 2025**, showcasing the innovative capabilities of Gemini 2.5 Flash Image Preview technology. The project demonstrates how multimodal AI can create entirely new forms of creative expression by combining vision, transformation, and audio generation in a seamless user experience.
+
+## Future Plans
+
+- **🎵 Enhanced Audio Mixing**: Advanced 3D spatial audio positioning based on scene depth analysis
+- **🎨 Custom Style**: User-uploadable transformation styles for personalized artistic effects
+- **📱 AR Integration**: Augmented reality overlay of transformed scenes with synchronized audio
+- **🤝 Social Sharing**: Share audio-visual creations with embedded interactive players
+- **🎯 Smart Recommendations**: AI-driven style and mood suggestions based on scene content
+- **🌍 Multi-language Support**: Localized narration in multiple languages using ElevenLabs' voice library
+
+## Acknowledgments
+
+- **ElevenLabs** for providing exceptional text-to-speech and sound generation APIs that bring scenes to life
+- **Google Gemini** for advanced multimodal AI capabilities enabling intelligent scene understanding
+- **Fal AI** for providing seamless API access
+- **The AI Community** for inspiring innovative applications of multimodal AI technologies
+
+## Technical Innovation
+
+SoundSnapper represents a breakthrough in multimodal AI application design by seamlessly orchestrating three distinct AI services:
+
+1. **Vision AI** (Gemini) provides intelligent scene understanding
+2. **Transformation AI** (Fal AI) enables artistic reality remixing  
+3. **Audio AI** (ElevenLabs) creates synchronized sensory experiences
+
+The result is a new paradigm for creative tools that transforms everyday moments into extraordinary multimedia experiences, showcasing the future of AI-powered creativity.
+
+---
+
+*Built with ❤️ for the Google Nano Banana Hackathon 2025 • Powered by ElevenLabs Audio AI*
